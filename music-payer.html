@@ -1,0 +1,39 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music Player</title>
+</head>
+<body>
+<audio id="birthdayMusic" src="Zac Efron, Zendaya - Rewrite The Stars (Sub. Español-Lyrics) SpiderMan No Way Home [Peter and MJ].mp3" loop preload="auto"></audio>
+    
+  <audio id="birthdayMusic" src="music.mp3" loop autoplay></audio>
+
+  <>
+    const music = document.getElementById("birthdayMusic");
+    music.volume = 0.5;
+
+    // Remember the music state while this player remains loaded.
+    window.addEventListener("message", (event) => {
+      if (event.data === "music-play") {
+        music.play().catch(() => {});
+      }
+
+      if (event.data === "music-pause") {
+        music.pause();
+      }
+
+      if (event.data === "music-toggle") {
+        if (music.paused) {
+          music.play().catch(() => {});
+        } else {
+          music.pause();
+        }
+      }
+    });
+
+    music.play().catch(() => {});
+</body>
+</html>
+```

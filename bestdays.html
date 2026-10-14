@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Best Days</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%}
+body{overflow:hidden;background:#0D0A11;color:#EFE8DC;font-family:Arial,Helvetica,sans-serif}
+
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 20%,rgba(255,80,220,.1),transparent 30%),radial-gradient(circle at 85% 75%,rgba(144,238,144,.09),transparent 30%);z-index:0}
+
+.stars{position:fixed;inset:0;pointer-events:none;z-index:1}
+.star{position:absolute;width:2px;height:2px;border-radius:50%;background:white;box-shadow:0 0 5px white,0 0 10px white;animation:twinkle 3s infinite ease-in-out}
+.star:nth-child(1){top:8%;left:8%}
+.star:nth-child(2){top:23%;left:20%;animation-delay:1s}
+.star:nth-child(3){top:12%;left:42%;animation-delay:2s}
+.star:nth-child(4){top:30%;left:72%;animation-delay:.5s}
+.star:nth-child(5){top:18%;left:91%;animation-delay:1.5s}
+.star:nth-child(6){top:65%;left:10%;animation-delay:2s}
+.star:nth-child(7){top:78%;left:30%;animation-delay:.8s}
+.star:nth-child(8){top:60%;left:80%;animation-delay:1.3s}
+.star:nth-child(9){top:88%;left:65%;animation-delay:2.3s}
+.star:nth-child(10){top:45%;left:50%;animation-delay:.3s}
+.star:nth-child(11){top:55%;left:55%;animation-delay:1.7s}
+.star:nth-child(12){top:37%;left:35%;animation-delay:2.4s}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.6)}}
+
+.back-button{position:fixed;top:25px;left:25px;z-index:100;padding:12px 22px;border:1px solid #90EE90;border-radius:30px;background:rgba(13,10,17,.72);color:#90EE90;font-size:13px;font-weight:bold;letter-spacing:2px;cursor:pointer;backdrop-filter:blur(10px);box-shadow:0 0 8px rgba(144,238,144,.35);transition:.3s}
+.back-button:hover{color:#0D0A11;background:#90EE90;box-shadow:0 0 10px #90EE90,0 0 30px rgba(144,238,144,.65);transform:translateX(-3px)}
+
+.game-container{position:relative;z-index:5;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+.game-title{position:absolute;top:28px;text-align:center;z-index:10;pointer-events:none}
+.game-title .small{display:block;margin-bottom:8px;color:#90EE90;font-size:10px;letter-spacing:6px;text-shadow:0 0 10px rgba(144,238,144,.7)}
+.game-title h1{color:#EFE8DC;font-size:clamp(28px,4vw,52px);letter-spacing:4px;text-shadow:0 0 15px rgba(255,80,220,.3)}
+.game-title h1 span{color:#FF50DC;text-shadow:0 0 10px #FF50DC,0 0 30px rgba(255,80,220,.6)}
+
+.memory-counter{position:absolute;top:105px;right:7%;z-index:20;color:#90EE90;font-size:12px;letter-spacing:3px;text-shadow:0 0 10px rgba(144,238,144,.7)}
+.memory-counter span{color:#FF50DC;font-size:18px;font-weight:bold;text-shadow:0 0 10px #FF50DC}
+
+#gameCanvas{display:block;width:min(1100px,92vw);height:min(600px,68vh);border:1px solid rgba(255,255,255,.14);border-radius:25px;background:rgba(10,7,14,.78);box-shadow:0 0 20px rgba(255,80,220,.08),0 0 70px rgba(144,238,144,.04),inset 0 0 50px rgba(255,255,255,.02)}
+
+.instructions{position:absolute;bottom:28px;width:100%;text-align:center;color:rgba(239,232,220,.5);font-size:11px;letter-spacing:2px;pointer-events:none}
+.key{display:inline-block;margin:0 3px;padding:4px 8px;border:1px solid rgba(144,238,144,.35);border-radius:5px;color:#90EE90;font-size:10px}
+
+.message-overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:25px;background:rgba(5,3,8,.86);backdrop-filter:blur(14px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s,visibility .45s}
+.message-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
+
+.message-card{position:relative;width:min(680px,92vw);max-height:90vh;overflow-y:auto;padding:48px 45px;text-align:center;border:1px solid rgba(255,80,220,.55);border-radius:30px;background:rgba(20,14,25,.96);box-shadow:0 0 20px rgba(255,80,220,.25),0 0 70px rgba(255,80,220,.13),inset 0 0 35px rgba(255,255,255,.02);transform:scale(.75) translateY(30px);transition:transform .6s cubic-bezier(.17,.67,.3,1.3);scrollbar-width:thin}
+.message-overlay.show .message-card{transform:scale(1) translateY(0)}
+
+.found-memory{margin-bottom:18px;color:#90EE90;font-size:11px;font-weight:bold;letter-spacing:5px;text-shadow:0 0 10px rgba(144,238,144,.7)}
+.sparkle{margin-bottom:12px;color:#FFD700;font-size:35px;text-shadow:0 0 10px #FFD700,0 0 25px #FFD700;animation:sparkle 1.5s infinite ease-in-out}
+@keyframes sparkle{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.22) rotate(8deg)}}
+
+.message-card h2{margin-bottom:18px;color:#FF50DC;font-size:13px;letter-spacing:5px;text-shadow:0 0 12px rgba(255,80,220,.7)}
+.message-card p{color:#EFE8DC;font-size:clamp(22px,4vw,38px);font-weight:bold;line-height:1.4;text-shadow:0 0 15px rgba(255,80,220,.25)}
+.sub-message{margin-top:20px;color:rgba(239,232,220,.65);font-size:13px;line-height:1.7;letter-spacing:1px}
+
+.continue-button{margin-top:30px;padding:13px 30px;border:1px solid #FF50DC;border-radius:30px;background:rgba(255,80,220,.08);color:#FF50DC;font-size:12px;font-weight:bold;letter-spacing:3px;cursor:pointer;transition:.3s}
+.continue-button:hover{color:#0D0A11;background:#FF50DC;box-shadow:0 0 15px #FF50DC,0 0 35px rgba(255,80,220,.5)}
+
+/* CUSTOM PICTURE FOR EACH MEMORY */
+.memory-image{display:none;width:100%;max-height:320px;object-fit:contain;margin:0 auto 25px;border:1px solid rgba(255,80,220,.55);border-radius:18px;background:#0D0A11;box-shadow:0 0 15px rgba(255,80,220,.25),0 0 40px rgba(255,80,220,.12);animation:videoAppear .5s ease}
+.memory-image.show{display:block}
+
+.memory-video{display:none;width:100%;margin:0 auto 25px;overflow:hidden;border:1px solid rgba(255,80,220,.55);border-radius:18px;background:#000;box-shadow:0 0 15px rgba(255,80,220,.25),0 0 40px rgba(255,80,220,.12);animation:videoAppear .5s ease}
+.memory-video.show{display:block}
+.video-wrapper{position:relative}
+.memory-video video{display:block;width:100%;max-height:340px;object-fit:contain;background:#000}
+.video-play-button{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:65px;height:65px;border:1px solid rgba(255,255,255,.7);border-radius:50%;background:rgba(255,80,220,.85);color:white;font-size:23px;cursor:pointer;box-shadow:0 0 15px #FF50DC,0 0 35px rgba(255,80,220,.6);z-index:5;transition:.3s}
+.video-play-button:hover{transform:translate(-50%,-50%) scale(1.1)}
+@keyframes videoAppear{from{opacity:0;transform:scale(.93) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+.mobile-controls{display:none;position:absolute;bottom:50px;left:50%;transform:translateX(-50%);z-index:30}
+.control-row{display:flex;justify-content:center}
+.control-button{width:48px;height:48px;margin:3px;border:1px solid rgba(144,238,144,.4);border-radius:12px;background:rgba(13,10,17,.78);color:#90EE90;font-size:20px;cursor:pointer;backdrop-filter:blur(10px);user-select:none;touch-action:none}
+
+@media(max-width:800px){
+ .back-button{top:15px;left:15px;padding:10px 16px;font-size:10px}
+ .game-title{top:72px}
+ .game-title h1{font-size:28px}
+ .game-title .small{font-size:8px;letter-spacing:4px}
+ .memory-counter{top:138px;right:8%;font-size:9px}
+ #gameCanvas{width:94vw;height:55vh;border-radius:18px}
+ .instructions{display:none}
+ .mobile-controls{display:block}
+ .message-card{width:94vw;max-height:88vh;padding:35px 20px}
+ .message-card p{font-size:22px}
+ .memory-video video{max-height:240px}
+ .memory-image{max-height:240px}
+}
+@media(max-width:450px){
+ .game-title h1{font-size:23px}
+ .game-title .small{letter-spacing:2px}
+ .message-card{padding:28px 16px}
+ .found-memory{font-size:9px;letter-spacing:3px}
+ .message-card h2{font-size:11px;letter-spacing:3px}
+ .message-card p{font-size:19px}
+ .sub-message{font-size:11px}
+ .memory-video video,.memory-image{max-height:200px}
+}
+</style>
+</head>
+
+<body>
+<audio id="birthdayMusic" src="Zac Efron, Zendaya - Rewrite The Stars (Sub. Español-Lyrics) SpiderMan No Way Home [Peter and MJ].mp3" loop preload="auto"></audio>
+
+<div class="stars">
+ <div class="star"></div><div class="star"></div>
+ <div class="star"></div><div class="star"></div>
+ <div class="star"></div><div class="star"></div>
+ <div class="star"></div><div class="star"></div>
+ <div class="star"></div><div class="star"></div>
+ <div class="star"></div><div class="star"></div>
+</div>
+
+<button class="back-button" onclick="goBack()">← BACK</button>
+
+<div class="game-container">
+ <div class="game-title">
+  <span class="small">✦ A LITTLE ADVENTURE FOR YOU ✦</span>
+  <h1>THE <span>BEST DAYS</span></h1>
+ </div>
+
+ <div class="memory-counter">MEMORIES <span id="memoryCount">0</span> / 7</div>
+ <canvas id="gameCanvas"></canvas>
+
+ <div class="instructions">
+  MOVE
+  <span class="key">W</span><span class="key">A</span>
+  <span class="key">S</span><span class="key">D</span>
+  or
+  <span class="key">↑</span><span class="key">←</span>
+  <span class="key">↓</span><span class="key">→</span>
+  &nbsp; • &nbsp; FIND ALL 7 MEMORIES
+ </div>
+
+ <div class="mobile-controls">
+  <div class="control-row"><button class="control-button" data-key="ArrowUp">↑</button></div>
+  <div class="control-row">
+   <button class="control-button" data-key="ArrowLeft">←</button>
+   <button class="control-button" data-key="ArrowDown">↓</button>
+   <button class="control-button" data-key="ArrowRight">→</button>
+  </div>
+ </div>
+</div>
+
+<!-- MEMORY POPUP -->
+<div class="message-overlay" id="messageOverlay">
+ <div class="message-card">
+  <div class="found-memory" id="foundMemory">MEMORY 01 FOUND</div>
+  <div class="sparkle">✦</div>
+
+  <!-- THE CHOSEN PICTURE APPEARS HERE -->
+  <img id="memoryImage" class="memory-image" src="" alt="Special memory">
+
+  <!-- MEMORY 2 VIDEO -->
+  <div class="memory-video" id="memoryVideoContainer">
+   <div class="video-wrapper">
+    <video id="memoryVideo" controls playsinline preload="metadata">
+     <source src="memory2.mp4" type="video/mp4">
+     Your browser does not support the video tag.
+    </video>
+    <button class="video-play-button" id="videoPlayButton" type="button">▶</button>
+   </div>
+  </div>
+
+  <h2 id="messageTitle">A LITTLE MEMORY</h2>
+  <p id="messageText">Message goes here.</p>
+  <div class="sub-message" id="subMessage">Keep going... There are more memories waiting for you.</div>
+  <button class="continue-button" id="continueButton" type="button">CONTINUE ✦</button>
+ </div>
+</div>
+
+<script>
+function goBack(){window.history.back()}
+
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
+let width=0,height=0;
+
+const player={
+ x:100,y:100,size:28,speed:4.5,direction:1,bob:0
+};
+
+/*
+  CHANGE THE IMAGE FILENAMES BELOW TO YOUR OWN PICTURES.
+  Keep the images in the same folder as this HTML file.
+*/
+const memories=[
+ {
+  x:.15,y:.20,color:"#FF50DC",
+  title:"THE BEGINNING",
+  message:"In every lifetime i only wanted you",
+  sub:"And somehow, this one became a story worth remembering.",
+  image:"g1.jpeg"
+ },
+ {
+  x:.50,y:.17,color:"#90EE90",
+  title:"THAT SMILE",
+  message:"Some smiles are impossible to forget.",
+  sub:"Especially the ones that can make an ordinary day feel special.",
+  image:"g3.jpeg"
+ },
+ {
+  x:.82,y:.25,color:"#FFD700",
+  title:"THE LITTLE THINGS",
+  message:"It's always the little things that matter the most.",
+  sub:"The random conversations, silly moments and tiny memories.",
+  image:"g2.jpeg"
+ },
+ {
+  x:.25,y:.55,color:"#FF50DC",
+  title:"HEAVY DUTIES",
+  message:"Tor heart er majhkhane duto heavy duties na asle i would not have been distracted this much",
+  sub:"And honestly... I wouldn't have it any other way.",
+  image:"g4.jpeg"
+ },
+ {
+  x:.72,y:.55,color:"#90EE90",
+  title:"ITS YOUR DAY",
+  message:"Je jotoi boluk just chill and fuck them ora bltei thakbe besi patta dibina.",
+  sub:"Mone rakhbi you have the man the myth the lgend by your side",
+  image:"g5.jpeg"
+ },
+ {
+  x:.43,y:.82,color:"#FFD700",
+  title:"FOREVER FAVOURITE",
+  message:"Some memories become favourites forever. 💫",
+  sub:"No matter how much time passes, they still make you smile.",
+  image:"g6.jpeg"
+ },
+ {
+  x:.85,y:.82,color:"#FF50DC",
+  title:"TO BE CONTINUED...",
+  message:"The best days aren't over yet. ❤️",
+  sub:"There are still so many memories waiting to happen.",
+  image:"g7.jpeg"
+ }
+];
+
+function updateMemoryPositions(){
+ memories.forEach(m=>{
+  m.realX=m.x*width;
+  m.realY=m.y*height;
+ });
+}
+
+function resizeCanvas(){
+ const rect=canvas.getBoundingClientRect();
+ const dpr=Math.min(window.devicePixelRatio||1,2);
+ canvas.width=rect.width*dpr;
+ canvas.height=rect.height*dpr;
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ width=rect.width;
+ height=rect.height;
+ updateMemoryPositions();
+ player.x=Math.max(player.size,Math.min(width-player.size,player.x));
+ player.y=Math.max(player.size,Math.min(height-player.size,player.y));
+}
+window.addEventListener("resize",resizeCanvas);
+
+const keys={};
+let collected=new Array(7).fill(false);
+let collectedCount=0;
+let particles=[];
+let showingFinalMessage=false;
+
+document.addEventListener("keydown",event=>{
+ keys[event.key]=true;
+ keys[event.code]=true;
+ if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","Space"].includes(event.code)){
+  event.preventDefault();
+ }
+});
+document.addEventListener("keyup",event=>{
+ keys[event.key]=false;
+ keys[event.code]=false;
+});
+window.addEventListener("blur",()=>{
+ Object.keys(keys).forEach(k=>keys[k]=false);
+});
+
+document.querySelectorAll(".control-button").forEach(button=>{
+ const key=button.dataset.key;
+ button.addEventListener("pointerdown",event=>{
+  event.preventDefault();
+  keys[key]=true;
+ });
+ ["pointerup","pointerleave","pointercancel"].forEach(name=>{
+  button.addEventListener(name,()=>keys[key]=false);
+ });
+});
+
+function createParticles(x,y,color){
+ for(let i=0;i<45;i++){
+  particles.push({
+   x,y,
+   vx:(Math.random()-.5)*7,
+   vy:(Math.random()-.5)*7,
+   life:1,
+   size:Math.random()*5+2,
+   color
+  });
+ }
+}
+
+function updateParticles(){
+ particles.forEach(p=>{
+  p.x+=p.vx;
+  p.y+=p.vy;
+  p.life-=.025;
+ });
+ particles=particles.filter(p=>p.life>0);
+}
+
+function drawParticles(){
+ particles.forEach(p=>{
+  ctx.save();
+  ctx.globalAlpha=p.life;
+  ctx.fillStyle=p.color;
+  ctx.shadowColor=p.color;
+  ctx.shadowBlur=15;
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+});
+
+}
+
+function updatePlayer(){
+ if(document.getElementById("messageOverlay").classList.contains("show"))return;
+
+ let moving=false;
+
+ if(keys.ArrowUp||keys.KeyW||keys.w||keys.W){player.y-=player.speed;moving=true}
+ if(keys.ArrowDown||keys.KeyS||keys.s||keys.S){player.y+=player.speed;moving=true}
+ if(keys.ArrowLeft||keys.KeyA||keys.a||keys.A){player.x-=player.speed;player.direction=-1;moving=true}
+ if(keys.ArrowRight||keys.KeyD||keys.d||keys.D){player.x+=player.speed;player.direction=1;moving=true}
+
+ player.x=Math.max(player.size,Math.min(width-player.size,player.x));
+ player.y=Math.max(player.size,Math.min(height-player.size,player.y));
+ if(moving)player.bob+=.15;
+}
+
+function checkCollisions(){
+ if(document.getElementById("messageOverlay").classList.contains("show"))return;
+
+ memories.forEach((memory,index)=>{
+  if(collected[index])return;
+  const dx=player.x-memory.realX;
+  const dy=player.y-memory.realY;
+  if(Math.sqrt(dx*dx+dy*dy)<player.size+25){
+   collectMemory(index);
+  }
+ });
+}
+
+const messageOverlay=document.getElementById("messageOverlay");
+const memoryImage=document.getElementById("memoryImage");
+const memoryVideoContainer=document.getElementById("memoryVideoContainer");
+const memoryVideo=document.getElementById("memoryVideo");
+const videoPlayButton=document.getElementById("videoPlayButton");
+const continueButton=document.getElementById("continueButton");
+
+function collectMemory(index){
+ if(collected[index])return;
+ const memory=memories[index];
+ collected[index]=true;
+ collectedCount++;
+ document.getElementById("memoryCount").textContent=collectedCount;
+ createParticles(memory.realX,memory.realY,memory.color);
+ showMemoryMessage(index);
+}
+
+function showMemoryMessage(index){
+ const memory=memories[index];
+
+ document.getElementById("foundMemory").textContent=
+  "MEMORY "+String(index+1).padStart(2,"0")+" FOUND";
+ document.getElementById("messageTitle").textContent=memory.title;
+ document.getElementById("messageText").textContent=memory.message;
+ document.getElementById("subMessage").textContent=memory.sub;
+
+ /* Display the picture selected for this particular memory. */
+ memoryImage.classList.remove("show");
+ memoryImage.onerror=null;
+
+ if(memory.image){
+  memoryImage.src=memory.image;
+  memoryImage.alt=memory.title;
+  memoryImage.onload=()=>memoryImage.classList.add("show");
+  memoryImage.onerror=()=>{
+   memoryImage.classList.remove("show");
+   console.warn("Could not load image: "+memory.image);
+  };
+ }else{
+  memoryImage.removeAttribute("src");
+ }
+
+ /* Keep the original video feature for Memory 2. */
+ if(index===1){
+  memoryVideoContainer.classList.add("show");
+  memoryVideo.currentTime=0;
+  videoPlayButton.style.display="none";
+
+  const playPromise=memoryVideo.play();
+  if(playPromise!==undefined){
+   playPromise.then(()=>{
+    videoPlayButton.style.display="none";
+   }).catch(()=>{
+    videoPlayButton.style.display="block";
+   });
+  }
+ }else{
+  stopVideo();
+ }
+
+ messageOverlay.classList.add("show");
+}
+
+function stopVideo(){
+ memoryVideo.pause();
+ memoryVideo.currentTime=0;
+ memoryVideoContainer.classList.remove("show");
+ videoPlayButton.style.display="none";
+}
+
+videoPlayButton.addEventListener("click",()=>{
+ memoryVideo.play().then(()=>{
+  videoPlayButton.style.display="none";
+ }).catch(()=>{
+  videoPlayButton.style.display="block";
+ });
+});
+
+memoryVideo.addEventListener("ended",()=>{
+ videoPlayButton.style.display="block";
+});
+
+continueButton.addEventListener("click",()=>{
+ if(collectedCount===7&&!showingFinalMessage){
+  showFinalMessage();
+  return;
+ }
+ closeMessage();
+});
+
+function showFinalMessage(){
+ showingFinalMessage=true;
+ stopVideo();
+ memoryImage.classList.remove("show");
+
+ document.getElementById("foundMemory").textContent="ALL 7 MEMORIES FOUND ✦";
+ document.getElementById("messageTitle").textContent="THE BEST DAYS";
+ document.getElementById("messageText").textContent="The best days are still ahead. ❤️";
+ document.getElementById("subMessage").textContent=
+  "Happy Birthday UCHAKO CHAN. Here's to all the memories we've made... and all the ones still waiting for us. ✨";
+ continueButton.textContent="START AGAIN ✦";
+}
+
+function closeMessage(){
+ messageOverlay.classList.remove("show");
+ stopVideo();
+
+ if(showingFinalMessage){
+  showingFinalMessage=false;
+  collected=new Array(7).fill(false);
+  collectedCount=0;
+  document.getElementById("memoryCount").textContent="0";
+  continueButton.textContent="CONTINUE ✦";
+ }
+}
+
+messageOverlay.addEventListener("click",event=>{
+ if(event.target===messageOverlay&&showingFinalMessage){
+  closeMessage();
+ }
+});
+
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"&&messageOverlay.classList.contains("show")){
+  closeMessage();
+ }
+});
+
+function drawPlayer(){
+ const bob=Math.sin(player.bob)*3;
+ ctx.save();
+ ctx.translate(player.x,player.y+bob);
+ ctx.scale(player.direction,1);
+
+ // Glowing body
+ ctx.shadowColor="#FF50DC";
+ ctx.shadowBlur=20;
+ ctx.fillStyle="#FF50DC";
+
+ const x=-16,y=-10,w=32,h=28,r=9;
+ ctx.beginPath();
+ ctx.moveTo(x+r,y);
+ ctx.lineTo(x+w-r,y);
+ ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+ ctx.lineTo(x+w,y+h-r);
+ ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+ ctx.lineTo(x+r,y+h);
+ ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+ ctx.lineTo(x,y+r);
+ ctx.quadraticCurveTo(x,y,x+r,y);
+ ctx.closePath();
+ ctx.fill();
+
+ // Head
+ ctx.fillStyle="#EFE8DC";
+ ctx.shadowColor="#EFE8DC";
+ ctx.shadowBlur=10;
+ ctx.beginPath();
+ ctx.arc(0,-20,13,0,Math.PI*2);
+ ctx.fill();
+
+ // Hair
+ ctx.fillStyle="#19131F";
+ ctx.shadowBlur=0;
+ ctx.beginPath();
+ ctx.arc(0,-24,12,Math.PI,Math.PI*2);
+ ctx.fill();
+
+ // Eye
+ ctx.fillStyle="#0D0A11";
+ ctx.beginPath();
+ ctx.arc(5,-20,2,0,Math.PI*2);
+ ctx.fill();
+
+ // Legs
+ ctx.strokeStyle="#90EE90";
+ ctx.lineWidth=5;
+ ctx.lineCap="round";
+ ctx.beginPath();
+ ctx.moveTo(-8,16);
+ ctx.lineTo(-8,25);
+ ctx.stroke();
+ ctx.beginPath();
+ ctx.moveTo(8,16);
+ ctx.lineTo(8,25);
+ ctx.stroke();
+
+ ctx.restore();
+}
+
+function drawMemories(){
+ memories.forEach((memory,index)=>{
+  if(collected[index])return;
+
+  const pulse=Math.sin(Date.now()*.004+index)*5;
+  ctx.save();
+  ctx.translate(memory.realX,memory.realY);
+  ctx.rotate(Date.now()*.0007);
+
+  // Outer glowing diamond
+  ctx.shadowColor=memory.color;
+  ctx.shadowBlur=25;
+  ctx.fillStyle=memory.color;
+  ctx.beginPath();
+  ctx.moveTo(0,-20-pulse);
+  ctx.lineTo(20+pulse,0);
+  ctx.lineTo(0,20+pulse);
+  ctx.lineTo(-20-pulse,0);
+  ctx.closePath();
+  ctx.fill();
+
+  // Inner diamond
+  ctx.fillStyle="#0D0A11";
+  ctx.shadowBlur=0;
+  ctx.beginPath();
+  ctx.moveTo(0,-9);
+  ctx.lineTo(9,0);
+  ctx.lineTo(0,9);
+  ctx.lineTo(-9,0);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  // Number and label
+  ctx.save();
+  ctx.textAlign="center";
+  ctx.font="bold 10px Arial";
+  ctx.fillStyle=memory.color;
+  ctx.shadowColor=memory.color;
+  ctx.shadowBlur=8;
+  ctx.fillText(index+1,memory.realX,memory.realY+4);
+  ctx.font="9px Arial";
+  ctx.shadowBlur=0;
+  ctx.fillText("MEMORY",memory.realX,memory.realY+42);
+  ctx.restore();
+ });
+}
+
+function drawGame(){
+ ctx.clearRect(0,0,width,height);
+
+ const gradient=ctx.createRadialGradient(
+  width/2,height/2,20,width/2,height/2,width
+ );
+ gradient.addColorStop(0,"rgba(255,80,220,.04)");
+ gradient.addColorStop(1,"rgba(13,10,17,0)");
+ ctx.fillStyle=gradient;
+ ctx.fillRect(0,0,width,height);
+
+ // Subtle green grid
+ ctx.strokeStyle="rgba(144,238,144,.035)";
+ ctx.lineWidth=1;
+ const gridSize=50;
+
+ for(let x=0;x<width;x+=gridSize){
+  ctx.beginPath();
+  ctx.moveTo(x,0);
+  ctx.lineTo(x,height);
+  ctx.stroke();
+ }
+
+ for(let y=0;y<height;y+=gridSize){
+  ctx.beginPath();
+  ctx.moveTo(0,y);
+  ctx.lineTo(width,y);
+  ctx.stroke();
+ }
+
+ drawMemories();
+ drawPlayer();
+ drawParticles();
+}
+
+function gameLoop(){
+ updatePlayer();
+ checkCollisions();
+ updateParticles();
+ drawGame();
+ requestAnimationFrame(gameLoop);
+}
+
+resizeCanvas();
+player.x=width*.5;
+player.y=height*.5;
+gameLoop();
+</script>
+  <script src="script.js"></script>
+
+</body>
+</html>

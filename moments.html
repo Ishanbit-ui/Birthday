@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Special Moments</title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0D0A11;
+            color: #EFE8DC;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           BACKGROUND
+        ===================================================== */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(255, 80, 220, 0.08),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 80% 70%,
+                    rgba(144, 238, 144, 0.07),
+                    transparent 30%
+                );
+
+            pointer-events: none;
+            z-index: -5;
+        }
+
+
+        /* =====================================================
+           STARS
+        ===================================================== */
+
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .star {
+            position: absolute;
+
+            width: 2px;
+            height: 2px;
+
+            background: white;
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 5px white,
+                0 0 10px rgba(255,255,255,0.5);
+
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        .star:nth-child(1) {
+            top: 12%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+
+        .star:nth-child(2) {
+            top: 25%;
+            left: 20%;
+            animation-delay: 1s;
+        }
+
+        .star:nth-child(3) {
+            top: 8%;
+            left: 40%;
+            animation-delay: 2s;
+        }
+
+        .star:nth-child(4) {
+            top: 30%;
+            left: 65%;
+            animation-delay: 0.5s;
+        }
+
+        .star:nth-child(5) {
+            top: 15%;
+            left: 85%;
+            animation-delay: 1.5s;
+        }
+
+        .star:nth-child(6) {
+            top: 55%;
+            left: 12%;
+            animation-delay: 2.5s;
+        }
+
+        .star:nth-child(7) {
+            top: 65%;
+            left: 30%;
+            animation-delay: 1.2s;
+        }
+
+        .star:nth-child(8) {
+            top: 48%;
+            left: 75%;
+            animation-delay: 0.8s;
+        }
+
+        .star:nth-child(9) {
+            top: 80%;
+            left: 88%;
+            animation-delay: 1.8s;
+        }
+
+        .star:nth-child(10) {
+            top: 90%;
+            left: 50%;
+            animation-delay: 2.2s;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.7);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        .back-button {
+            position: fixed;
+
+            top: 25px;
+            left: 25px;
+
+            z-index: 100;
+
+            padding: 12px 22px;
+
+            background: rgba(13, 10, 17, 0.65);
+
+            color: #90EE90;
+
+            border: 1px solid #90EE90;
+
+            border-radius: 30px;
+
+            font-size: 13px;
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            backdrop-filter: blur(10px);
+
+            box-shadow:
+                0 0 8px rgba(144, 238, 144, 0.35),
+                inset 0 0 10px rgba(144, 238, 144, 0.05);
+
+            transition: 0.3s ease;
+        }
+
+        .back-button:hover {
+
+            color: #0D0A11;
+
+            background: #90EE90;
+
+            box-shadow:
+                0 0 10px #90EE90,
+                0 0 25px rgba(144, 238, 144, 0.6);
+
+            transform: translateX(-3px);
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            padding: 100px 20px 80px;
+
+            position: relative;
+        }
+
+        .small-title {
+
+            color: #90EE90;
+
+            font-size: 13px;
+
+            letter-spacing: 7px;
+
+            margin-bottom: 25px;
+
+            text-shadow:
+                0 0 8px rgba(144, 238, 144, 0.8);
+        }
+
+        .hero h1 {
+
+            font-size: clamp(4rem, 10vw, 9rem);
+
+            font-weight: 900;
+
+            line-height: 0.9;
+
+            letter-spacing: -5px;
+
+            color: transparent;
+
+            -webkit-text-stroke: 1px rgba(239, 232, 220, 0.8);
+
+            text-shadow:
+                0 0 20px rgba(255, 80, 220, 0.2);
+
+            margin-bottom: 35px;
+        }
+
+        .hero h1 span {
+
+            color: #FF50DC;
+
+            -webkit-text-stroke: 0;
+
+            text-shadow:
+                0 0 10px #FF50DC,
+                0 0 30px rgba(255, 80, 220, 0.7),
+                0 0 70px rgba(255, 80, 220, 0.4);
+        }
+
+        .hero-description {
+
+            max-width: 650px;
+
+            font-size: 16px;
+
+            line-height: 1.8;
+
+            color: rgba(239, 232, 220, 0.65);
+
+            letter-spacing: 1px;
+        }
+
+        .scroll-text {
+
+            position: absolute;
+
+            bottom: 40px;
+
+            color: #90EE90;
+
+            font-size: 11px;
+
+            letter-spacing: 4px;
+
+            animation: scrollPulse 2s infinite;
+        }
+
+        .scroll-text::after {
+
+            content: "↓";
+
+            display: block;
+
+            margin-top: 10px;
+
+            font-size: 20px;
+        }
+
+        @keyframes scrollPulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+
+        /* =====================================================
+           MEMORY SECTION
+        ===================================================== */
+
+        .memories {
+
+            width: min(1200px, 90%);
+
+            margin: auto;
+
+            position: relative;
+
+            padding-bottom: 150px;
+        }
+
+
+        /* =====================================================
+           CENTRAL TIMELINE
+        ===================================================== */
+
+        .memory-line {
+
+            position: absolute;
+
+            top: 0;
+            bottom: 0;
+
+            left: 50%;
+
+            width: 2px;
+
+            transform: translateX(-50%);
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    #FF50DC,
+                    #90EE90,
+                    #FFD700,
+                    #FF50DC,
+                    transparent
+                );
+
+            box-shadow:
+                0 0 8px #FF50DC,
+                0 0 20px rgba(255, 80, 220, 0.4),
+                0 0 35px rgba(144, 238, 144, 0.2);
+        }
+
+
+        /* =====================================================
+           MEMORY BLOCK
+        ===================================================== */
+
+        .memory {
+
+            position: relative;
+
+            width: 50%;
+
+            padding: 80px 60px;
+
+            opacity: 0;
+
+            transform: translateY(70px);
+
+            transition:
+                opacity 0.9s ease,
+                transform 0.9s ease;
+        }
+
+        .memory.visible {
+
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+
+
+        /* FIRST MEMORY LEFT */
+
+        .memory.left {
+
+            left: 0;
+
+            text-align: right;
+        }
+
+
+        /* SECOND MEMORY RIGHT */
+
+        .memory.right {
+
+            left: 50%;
+
+            text-align: left;
+        }
+
+
+        /* =====================================================
+           TIMELINE DOT
+        ===================================================== */
+
+        .memory::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 110px;
+
+            width: 13px;
+            height: 13px;
+
+            border-radius: 50%;
+
+            background: #FF50DC;
+
+            box-shadow:
+                0 0 8px #FF50DC,
+                0 0 20px #FF50DC,
+                0 0 40px rgba(255, 80, 220, 0.6);
+
+            z-index: 5;
+        }
+
+        .memory.left::before {
+
+            right: -6px;
+        }
+
+        .memory.right::before {
+
+            left: -6px;
+        }
+
+
+        /* =====================================================
+           MEMORY CARD
+        ===================================================== */
+
+        .memory-card {
+
+            position: relative;
+
+            max-width: 450px;
+
+            display: inline-block;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            border-radius: 22px;
+
+            padding: 12px;
+
+            backdrop-filter: blur(12px);
+
+            overflow: hidden;
+
+            transition:
+                transform 0.5s ease,
+                border-color 0.5s ease,
+                box-shadow 0.5s ease;
+        }
+
+        .memory-card:hover {
+
+            transform:
+                translateY(-10px)
+                rotate(-1deg);
+
+            border-color: rgba(255, 80, 220, 0.7);
+
+            box-shadow:
+                0 0 15px rgba(255, 80, 220, 0.3),
+                0 0 40px rgba(255, 80, 220, 0.15);
+        }
+
+
+        /* =====================================================
+           SPECIAL GOLD CARDS
+        ===================================================== */
+
+        .memory.special .memory-card {
+
+            border-color: rgba(255, 215, 0, 0.5);
+
+            box-shadow:
+                0 0 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .memory.special .memory-card:hover {
+
+            border-color: #FFD700;
+
+            box-shadow:
+                0 0 15px rgba(255, 215, 0, 0.5),
+                0 0 40px rgba(255, 215, 0, 0.25);
+        }
+
+
+        /* =====================================================
+           IMAGE
+        ===================================================== */
+
+        .memory-card img {
+
+            width: 100%;
+
+            height: 280px;
+
+            object-fit: cover;
+
+            display: block;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.6s ease,
+                filter 0.6s ease;
+        }
+
+        .memory-card:hover img {
+
+            transform: scale(1.04);
+
+            filter:
+                brightness(1.08)
+                saturate(1.15);
+        }
+
+
+        /* =====================================================
+           MEMORY INFORMATION
+        ===================================================== */
+
+        .memory-info {
+
+            padding: 22px 15px 15px;
+        }
+
+        .memory-number {
+
+            font-size: 11px;
+
+            color: #90EE90;
+
+            letter-spacing: 4px;
+
+            margin-bottom: 10px;
+
+            font-weight: bold;
+        }
+
+        .memory-title {
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 10px;
+
+            color: #EFE8DC;
+        }
+
+        .memory-description {
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            color: rgba(239, 232, 220, 0.55);
+        }
+
+
+        /* =====================================================
+           SPECIAL LABEL
+        ===================================================== */
+
+        .special-label {
+
+            position: absolute;
+
+            top: 22px;
+            right: 22px;
+
+            padding: 6px 12px;
+
+            border: 1px solid #FFD700;
+
+            border-radius: 20px;
+
+            color: #FFD700;
+
+            font-size: 9px;
+
+            letter-spacing: 2px;
+
+            background: rgba(13, 10, 17, 0.7);
+
+            box-shadow:
+                0 0 10px rgba(255, 215, 0, 0.4);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            text-align: center;
+
+            padding: 50px 20px 80px;
+
+            color: rgba(239, 232, 220, 0.4);
+
+            font-size: 11px;
+
+            letter-spacing: 4px;
+        }
+
+        footer span {
+
+            color: #FF50DC;
+
+            text-shadow:
+                0 0 10px rgba(255, 80, 220, 0.7);
+        }
+
+
+        /* =====================================================
+           IMAGE POPUP
+        ===================================================== */
+
+        .popup {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(5, 3, 8, 0.92);
+
+            backdrop-filter: blur(12px);
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px;
+
+            z-index: 200;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition:
+                opacity 0.35s ease,
+                visibility 0.35s ease;
+        }
+
+        .popup.active {
+
+            opacity: 1;
+
+            visibility: visible;
+        }
+
+        .popup-image {
+
+            max-width: 90vw;
+
+            max-height: 85vh;
+
+            object-fit: contain;
+
+            border-radius: 15px;
+
+            border: 1px solid rgba(255,255,255,0.2);
+
+            box-shadow:
+                0 0 25px rgba(255, 80, 220, 0.4),
+                0 0 70px rgba(255, 80, 220, 0.15);
+
+            transform: scale(0.85);
+
+            transition:
+                transform 0.4s ease;
+        }
+
+        .popup.active .popup-image {
+
+            transform: scale(1);
+        }
+
+
+        /* =====================================================
+           CLOSE BUTTON
+        ===================================================== */
+
+        .close-popup {
+
+            position: absolute;
+
+            top: 25px;
+            right: 30px;
+
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            background: rgba(13,10,17,0.8);
+
+            border: 1px solid #FF50DC;
+
+            color: #FF50DC;
+
+            font-size: 22px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 10px rgba(255, 80, 220, 0.4);
+
+            transition: 0.3s ease;
+        }
+
+        .close-popup:hover {
+
+            color: #0D0A11;
+
+            background: #FF50DC;
+
+            box-shadow:
+                0 0 15px #FF50DC,
+                0 0 35px rgba(255,80,220,0.5);
+
+            transform: rotate(90deg);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .back-button {
+
+                top: 15px;
+                left: 15px;
+
+                padding: 10px 16px;
+
+                font-size: 11px;
+            }
+
+            .hero {
+
+                min-height: 85vh;
+
+                padding-top: 120px;
+            }
+
+            .hero h1 {
+
+                font-size: 15vw;
+
+                letter-spacing: -2px;
+            }
+
+            .small-title {
+
+                font-size: 10px;
+
+                letter-spacing: 4px;
+            }
+
+            .hero-description {
+
+                font-size: 13px;
+
+                max-width: 90%;
+            }
+
+            .memory-line {
+
+                left: 20px;
+            }
+
+            .memory {
+
+                width: 100%;
+
+                left: 0 !important;
+
+                padding:
+                    60px 0 60px 50px;
+
+                text-align: left !important;
+            }
+
+            .memory::before {
+
+                left: 14px !important;
+
+                right: auto !important;
+            }
+
+            .memory-card {
+
+                width: 100%;
+            }
+
+            .memory-card img {
+
+                height: 230px;
+            }
+
+            .memory-title {
+
+                font-size: 21px;
+            }
+
+            .memory-description {
+
+                font-size: 13px;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .hero h1 {
+
+                font-size: 18vw;
+            }
+
+            .hero-description {
+
+                line-height: 1.6;
+            }
+
+            .memory-card img {
+
+                height: 200px;
+            }
+
+            .memory {
+
+                padding-left: 35px;
+            }
+
+            .memory-line {
+
+                left: 10px;
+            }
+
+            .memory::before {
+
+                left: 4px !important;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+<audio id="birthdayMusic" src="Zac Efron, Zendaya - Rewrite The Stars (Sub. Español-Lyrics) SpiderMan No Way Home [Peter and MJ].mp3" loop preload="auto"></audio>
+    
+
+
+    <!-- =====================================================
+         BACK BUTTON
+    ===================================================== -->
+
+    <button class="back-button" onclick="goBack()">
+        ← BACK
+    </button>
+
+
+    <!-- =====================================================
+         STARS
+    ===================================================== -->
+
+    <div class="stars">
+
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <section class="hero">
+
+        <div class="small-title">
+            ✦ A COLLECTION OF ✦
+        </div>
+
+        <h1>
+            SPECIAL <span>MOMENTS</span>
+        </h1>
+
+        <p class="hero-description">
+
+            Some moments disappear with time.
+            <br>
+
+            Some stay forever.
+
+            <br><br>
+
+            This is a little collection of the memories,
+            laughs, chaos and moments that deserve
+            to be remembered.
+
+        </p>
+
+        <div class="scroll-text">
+            SCROLL TO REMEMBER
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MEMORIES
+    ===================================================== -->
+
+    <section class="memories">
+
+        <div class="memory-line"></div>
+
+
+        <!-- =================================================
+             MEMORY 01
+        ================================================= -->
+
+        <div class="memory left">
+
+            <div class="memory-card"
+                 onclick="openMemory('m2.jpeg')">
+
+                <img
+                    src="m2.jpeg"
+                    alt="The Beginning"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 01
+                    </div>
+
+                    <div class="memory-title">
+                        The Beginning
+                    </div>
+
+                    <div class="memory-description">
+                        Every beautiful story has a beginning.
+                        Maybe this was one of those moments.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 02
+        ================================================= -->
+
+        <div class="memory right">
+
+            <div class="memory-card"
+                 onclick="openMemory('m3.jpeg')">
+
+                <img
+                    src="m3.jpeg"
+                    alt="That Smile"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 02
+                    </div>
+
+                    <div class="memory-title">
+                        That Smile
+                    </div>
+
+                    <div class="memory-description">
+                        A smile that somehow makes an ordinary
+                        moment feel a little more special.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 03
+        ================================================= -->
+
+        <div class="memory left special">
+
+            <div class="memory-card"
+                 onclick="openMemory('m5.jpeg')">
+
+                <div class="special-label">
+                    SPECIAL
+                </div>
+
+                <img
+                    src="m5.jpeg"
+                    alt="One To Remember"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 03
+                    </div>
+
+                    <div class="memory-title">
+                        One To Remember
+                    </div>
+
+                    <div class="memory-description">
+                        Out of all the little moments,
+                        some simply stay a little longer.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 04
+        ================================================= -->
+
+        <div class="memory right">
+
+            <div class="memory-card"
+                 onclick="openMemory('m6.jpeg')">
+
+                <img
+                    src="m6.jpeg"
+                    alt="Just Us"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 04
+                    </div>
+
+                    <div class="memory-title">
+                        Just Us
+                    </div>
+
+                    <div class="memory-description">
+                        No special occasion.
+                        No big plans.
+                        Just a moment that mattered.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 05
+        ================================================= -->
+
+        <div class="memory left">
+
+            <div class="memory-card"
+                 onclick="openMemory('m4.jpeg')">
+
+                <img
+                    src="m4.jpeg"
+                    alt="The Little Things"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 05
+                    </div>
+
+                    <div class="memory-title">
+                        The Little Things
+                    </div>
+
+                    <div class="memory-description">
+                        Sometimes the smallest things become
+                        the memories we remember the most.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 06
+        ================================================= -->
+
+        <div class="memory right">
+
+            <div class="memory-card"
+                 onclick="openMemory('7.jpeg')">
+
+                <img
+                    src="7.jpeg"
+                    alt="The Random Ones"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 06
+                    </div>
+
+                    <div class="memory-title">
+                        The Random Ones
+                    </div>
+
+                    <div class="memory-description">
+                        Completely random.
+                        Completely unexpected.
+                        Somehow unforgettable.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 07
+        ================================================= -->
+
+        <div class="memory left">
+
+            <div class="memory-card"
+                 onclick="openMemory('m8.jpeg')">
+
+                <img
+                    src="m8.jpeg"
+                    alt="A Perfect Day"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 07
+                    </div>
+
+                    <div class="memory-title">
+                        A Perfect Day
+                    </div>
+
+                    <div class="memory-description">
+                        One of those days where everything
+                        just feels right.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 08
+        ================================================= -->
+
+        <div class="memory right special">
+
+            <div class="memory-card"
+                 onclick="openMemory('m7.jpeg')">
+
+                <div class="special-label">
+                    FAVOURITE
+                </div>
+
+                <img
+                    src="m7.jpeg"
+                    alt="Forever Favourite"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 08
+                    </div>
+
+                    <div class="memory-title">
+                        Forever Favourite
+                    </div>
+
+                    <div class="memory-description">
+                        Some pictures become favourites.
+                        Some moments become memories.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 09
+        ================================================= -->
+
+        <div class="memory left">
+
+            <div class="memory-card"
+                 onclick="openMemory('m10.jpeg')">
+
+                <img
+                    src="m10.jpeg"
+                    alt="Laughs and Chaos"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 09
+                    </div>
+
+                    <div class="memory-title">
+                        Laughs & Chaos
+                    </div>
+
+                    <div class="memory-description">
+                        Because apparently the best memories
+                        usually come with a little chaos.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 10
+        ================================================= -->
+
+        <div class="memory right">
+
+            <div class="memory-card"
+                 onclick="openMemory('m9.jpeg')">
+
+                <img
+                    src="m9.jpeg"
+                    alt="Another Chapter"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 10
+                    </div>
+
+                    <div class="memory-title">
+                        Another Chapter
+                    </div>
+
+                    <div class="memory-description">
+                        Another picture.
+                        Another story.
+                        Another chapter worth remembering.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEMORY 11
+        ================================================= -->
+
+        <div class="memory left special">
+
+            <div class="memory-card"
+                 onclick="openMemory('m11.jpeg')">
+
+                <div class="special-label">
+                    TO BE CONTINUED
+                </div>
+
+                <img
+                    src="m11.jpeg"
+                    alt="To Be Continued"
+                >
+
+                <div class="memory-info">
+
+                    <div class="memory-number">
+                        MEMORY 11
+                    </div>
+
+                    <div class="memory-title">
+                        To Be Continued...
+                    </div>
+
+                    <div class="memory-description">
+                        Because this isn't the end.
+
+                        <br><br>
+
+                        There are still many more memories
+                        waiting to happen.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+        MADE OF MEMORIES
+
+        <span>✦</span>
+
+        FOR UCHAKO CHAN
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         IMAGE POPUP
+    ===================================================== -->
+
+    <div
+        class="popup"
+        id="imagePopup"
+        onclick="closeOutside(event)"
+    >
+
+        <button
+            class="close-popup"
+            onclick="closeMemory()"
+        >
+            ×
+        </button>
+
+        <img
+            id="popupImage"
+            class="popup-image"
+            src=""
+            alt="Memory"
+        >
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+
+
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        function goBack() {
+
+            window.history.back();
+
+        }
+
+
+
+        /* =====================================================
+           SCROLL REVEAL
+        ===================================================== */
+
+        const memories =
+            document.querySelectorAll(".memory");
+
+
+        const observer =
+            new IntersectionObserver(
+
+                function(entries) {
+
+                    entries.forEach(function(entry) {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add("visible");
+
+                        }
+
+                    });
+
+                },
+
+                {
+                    threshold: 0.15
+                }
+
+            );
+
+
+        memories.forEach(function(memory) {
+
+            observer.observe(memory);
+
+        });
+
+
+
+        /* =====================================================
+           OPEN IMAGE
+        ===================================================== */
+
+        function openMemory(image) {
+
+            const popup =
+                document.getElementById("imagePopup");
+
+            const popupImage =
+                document.getElementById("popupImage");
+
+
+            popupImage.src = image;
+
+            popup.classList.add("active");
+
+
+            document.body.style.overflow = "hidden";
+
+        }
+
+
+
+        /* =====================================================
+           CLOSE IMAGE
+        ===================================================== */
+
+        function closeMemory() {
+
+            const popup =
+                document.getElementById("imagePopup");
+
+
+            popup.classList.remove("active");
+
+
+            document.body.style.overflow = "auto";
+
+
+            setTimeout(function() {
+
+                document.getElementById("popupImage").src = "";
+
+            }, 350);
+
+        }
+
+
+
+        /* =====================================================
+           CLOSE WHEN CLICKING OUTSIDE IMAGE
+        ===================================================== */
+
+        function closeOutside(event) {
+
+            const popupImage =
+                document.getElementById("popupImage");
+
+
+            if (event.target ===
+                document.getElementById("imagePopup")) {
+
+                closeMemory();
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           ESCAPE KEY
+        ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Escape") {
+
+                    closeMemory();
+
+                }
+
+            }
+        );
+
+
+    </script>
+  <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Birthday</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #0D0A11;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 10, 17, 0.55);
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            color: #EFE8DC;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+        }
+    </style>
+</head>
+
+<body>
+    
+    
+<!-- Birthday music -->
+<!-- <audio id="birthdayMusic" src="Zac Efron, Zendaya - Rewrite The Stars (Sub. Español-Lyrics) SpiderMan No Way Home [Peter and MJ].mp3" loop preload="auto"></audio> -->
+
+<!-- Music toggle in the top-right corner -->
+<button
+    id="musicToggle"
+    type="button"
+    aria-label="Turn music on"
+    title="Turn music on"
+    style="
+        position: fixed;
+        top: 18px;
+        right: 20px;
+        z-index: 100;
+        width: 44px;
+        height: 44px;
+        border: 1px solid #90EE90;
+        border-radius: 50%;
+        background: rgba(13, 10, 17, 0.75);
+        color: #90EE90;
+        font-size: 21px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    "
+>
+    🔇
+</button>
+
+
+    <video
+        class="video-bg"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+    >
+        <source src="bday.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <main class="content">
+       <div class="center-buttons">
+
+    <button class="green-btn" id="soumadeepBtn" type="button">
+        THE GREAT SOUMADEEP
+    </button>
+
+    <button class="green-btn runaway-btn" id="jungkookBtn" type="button">
+        JUNGKOOK
+    </button>
+
+    <div id="congratsText">
+        CONGRATS! NOW PROCEED ✨
+    </div>
+
+</div>
+        <h1 class="birthday-title">HAPPY BIRTHDAY UCHAKO CHAN</h1>
+     <div class="cards">
+
+   <div class="cards">
+
+    <div class="card" data-page="memories.html">
+        <img src="1.jpeg" alt="Memory 1">
+        <div class="card-text">Beautiful Memories</div>
+    </div>
+
+    <div class="card" data-page="moments.html">
+        <img src="2.jpeg" alt="Memory 2">
+        <div class="card-text">Special Moments</div>
+    </div>
+
+    <div class="card" data-page="bestdays.html">
+        <img src="3.jpeg" alt="Memory 3">
+        <div class="card-text">Best Days</div>
+    </div>
+
+    <div class="card" data-page="birthday.html">
+        <img src="4.jpeg" alt="Memory 4">
+        <div class="card-text">Happy Birthday</div>
+    </div>
+
+</div>
+</div>
+    </main>
+<script src="script.js"></script>
+</body>
+</html>

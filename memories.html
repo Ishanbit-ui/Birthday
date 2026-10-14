@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Beautiful Memories</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #0b1020;
+        }
+
+        /* =========================
+           FULL SCREEN GALLERY
+        ========================= */
+
+        .gallery {
+            position: fixed;
+            inset: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            overflow: hidden;
+
+            background: #111;
+        }
+
+        /* =========================
+           MOVING PHOTO TRACK
+        ========================= */
+
+        .photo-track {
+            display: grid;
+
+            grid-template-columns: repeat(6, 1fr);
+
+            gap: 4px;
+
+            width: 100%;
+
+            animation: moveDown 15s linear infinite;
+        }
+
+        /* =========================
+           PHOTO
+        ========================= */
+
+        .photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+
+            overflow: hidden;
+
+            background: #222;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition: transform 0.5s ease;
+        }
+
+        /* Slight zoom when mouse is over photo */
+
+        .photo:hover img {
+            transform: scale(1.08);
+            cursor: pointer;
+        }
+
+        /* =========================
+           CONTINUOUS DOWNWARD MOTION
+        ========================= */
+
+        @keyframes moveDown {
+
+            from {
+                transform: translateY(-50%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* =========================
+           DARK OVERLAY
+        ========================= */
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.35),
+                    rgba(0, 0, 0, 0.05) 25%,
+                    rgba(0, 0, 0, 0.05) 75%,
+                    rgba(0, 0, 0, 0.4)
+                );
+
+            pointer-events: none;
+
+            z-index: 5;
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
+
+        .heading {
+            position: fixed;
+
+            top: 25px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 10;
+
+            text-align: center;
+
+            color: white;
+
+            pointer-events: none;
+
+            text-shadow:
+                0 2px 5px rgba(0, 0, 0, 0.8),
+                0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .heading h1 {
+            font-size: clamp(35px, 4vw, 65px);
+
+            font-weight: 900;
+
+            letter-spacing: 3px;
+        }
+
+        .heading p {
+            margin-top: 8px;
+
+            font-size: clamp(16px, 1.5vw, 25px);
+
+            font-weight: 600;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-btn {
+            position: fixed;
+
+            top: 25px;
+            left: 25px;
+
+            z-index: 20;
+
+            padding: 12px 22px;
+
+            border: 2px solid white;
+            border-radius: 30px;
+
+            background: rgba(0, 0, 0, 0.35);
+
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            backdrop-filter: blur(5px);
+
+            transition:
+                background 0.3s ease,
+                transform 0.3s ease,
+                box-shadow 0.3s ease;jpg
+        };
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+
+            transform: scale(1.05);
+
+            box-shadow:
+                0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1200px) {
+
+            .photo-track {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+        }
+
+        @media (max-width: 800px) {
+
+            .photo-track {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .photo-track {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .heading h1 {
+                font-size: 30px;
+            }
+
+            .heading p {
+                font-size: 14px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+<audio id="birthdayMusic" src="Zac Efron, Zendaya - Rewrite The Stars (Sub. Español-Lyrics) SpiderMan No Way Home [Peter and MJ].mp3" loop preload="auto"></audio>
+    
+
+    <!-- BACK BUTTON -->
+
+    <button class="back-btn" onclick="history.back()">
+        ← Back
+    </button>
+
+
+    <!-- TITLE -->
+
+    <div class="heading">
+
+        <h1>Beautiful Memories</h1>
+
+        <p> Collection Of Special Moments ✨</p>
+
+    </div>
+
+
+    <!-- FULL SCREEN GALLERY -->
+
+    <div class="gallery">
+
+        <div class="photo-track">
+
+            <!-- FIRST SET -->
+
+            <div class="photo">
+                <img src="1.jpeg" alt="Memory 1">
+            </div>
+
+            <div class="photo">
+                <img src="2.jpeg" alt="Memory 2">
+            </div>
+
+            <div class="photo">
+                <img src="3.jpeg" alt="Memory 3">
+            </div>
+
+            <div class="photo">
+                <img src="4.jpeg" alt="Memory 4">
+            </div>
+
+            <div class="photo">
+                <img src="5.jpeg" alt="Memory 5">
+            </div>
+
+            <div class="photo">
+                <img src="6.jpeg" alt="Memory 6">
+            </div>
+
+            <div class="photo">
+                <img src="7.jpeg" alt="Memory 7">
+            </div>
+
+            <div class="photo">
+                <img src="8.jpeg" alt="Memory 8">
+            </div>
+
+            <div class="photo">
+                <img src="9.jpeg" alt="Memory 9">
+            </div>
+
+            <div class="photo">
+                <img src="10.jpeg" alt="Memory 10">
+            </div>
+
+            <div class="photo">
+                <img src="11.jpeg" alt="Memory 11">
+            </div>
+
+            <div class="photo">
+                <img src="12.jpeg" alt="Memory 12">
+            </div>
+
+            <div class="photo">
+                <img src="13.jpeg" alt="Memory 13">
+            </div>
+
+            <div class="photo">
+                <img src="14.jpeg" alt="Memory 14">
+            </div>
+
+            <div class="photo">
+                <img src="15.jpeg" alt="Memory 15">
+            </div>
+
+
+            <!-- SECOND IDENTICAL SET -->
+
+            <div class="photo">
+                <img src="1.jpeg" alt="Memory 1">
+            </div>
+
+            <div class="photo">
+                <img src="2.jpeg" alt="Memory 2">
+            </div>
+
+            <div class="photo">
+                <img src="3.jpeg" alt="Memory 3">
+            </div>
+
+            <div class="photo">
+                <img src="4.jpeg" alt="Memory 4">
+            </div>
+
+            <div class="photo">
+                <img src="5.jpeg" alt="Memory 5">
+            </div>
+
+            <div class="photo">
+                <img src="6.jpeg" alt="Memory 6">
+            </div>
+
+            <div class="photo">
+                <img src="7.jpeg" alt="Memory 7">
+            </div>
+
+            <div class="photo">
+                <img src="8.jpeg" alt="Memory 8">
+            </div>
+
+            <div class="photo">
+                <img src="9.jpeg" alt="Memory 9">
+            </div>
+
+            <div class="photo">
+                <img src="10.jpeg" alt="Memory 10">
+            </div>
+
+            <div class="photo">
+                <img src="11.jpeg" alt="Memory 11">
+            </div>
+
+            <div class="photo">
+                <img src="12.jpeg" alt="Memory 12">
+            </div>
+
+            <div class="photo">
+                <img src="13.jpeg" alt="Memory 13">
+            </div>
+
+            <div class="photo">
+                <img src="14.jpeg" alt="Memory 14">
+            </div>
+
+            <div class="photo">
+                <img src="15.jpeg" alt="Memory 15">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- OVERLAY -->
+
+    <div class="overlay"></div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
